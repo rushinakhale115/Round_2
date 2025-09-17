@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demon Slayer Hub</title>
+    <title>Anime Hub - Your Ultimate Anime Destination</title>
+    <meta name="description" content="Discover the best anime series, characters, and community. Stream, discuss, and explore your favorite anime worlds at Anime Hub!">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Caveat', cursive;
-            background: #1a202c; /* Matches bg-gray-900 */
+            background: linear-gradient(135deg, #1a202c, #2d3748); /* Dark anime-themed gradient */
             color: #fff;
             overflow-x: hidden;
         }
@@ -19,10 +20,11 @@
             line-height: 1.4;
         }
         .btn-anim {
-            transition: transform 0.2s ease-in-out;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
         }
         .btn-anim:hover {
-            transform: scale(1.1);
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(255, 165, 0, 0.5);
         }
         .floating {
             animation: float 3s ease-in-out infinite;
@@ -47,44 +49,20 @@
             background-size: 20px 20px;
             background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
         }
-        iframe.hero-video {
-            transform: scale(1.5); /* Adjusts zoom for hero background video */
+        .navbar {
+            transition: background-color 0.3s ease;
+        }
+        .navbar.scrolled {
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+        iframe {
+            transform: scale(1.5); /* Adjusts zoom to better fill the screen */
         }
         .character-card {
             position: relative;
             overflow: visible; /* Allow reflection to be visible */
             margin-bottom: 100px; /* Space for reflection */
-        }
-        .character-card .image-container {
-            position: relative;
-            width: 100%;
-            height: 16rem; /* Matches h-64 */
-            overflow: hidden;
-        }
-        .character-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Ensure image fits perfectly in frame */
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 10;
-            transition: opacity 0.3s ease;
-        }
-        .character-card iframe {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 5;
-            display: none; /* Hidden by default */
-        }
-        .character-card:hover img {
-            opacity: 0; /* Hide image on hover */
-        }
-        .character-card:hover iframe {
-            display: block; /* Show video on hover */
         }
         .character-card .reflection {
             position: absolute;
@@ -126,158 +104,245 @@
             opacity: 0.5; /* Slightly increase opacity on hover */
             filter: blur(1px); /* Reduce blur on hover for sharper reflection */
         }
+        #showcase .handwritten,
+        #showcase .character-card img,
+        #showcase .character-card .checkered-pattern,
+        #showcase .character-card .reflection,
+        #showcase .character-card .reflection-img,
+        #showcase .character-card .reflection-content {
+            transform: scaleX(-1) scaleY(1); /* Counteract horizontal flip for text and images, preserve vertical flip for reflection */
+        }
+        .hidden-review {
+            display: none;
+        }
+        .show-reviews .hidden-review {
+            display: block;
+        }
+        .search-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 165, 0, 0.5);
+            color: white;
+        }
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .series-card {
+            transition: transform 0.3s ease;
+        }
+        .series-card:hover {
+            transform: translateY(-5px);
+        }
+        #newsletter-form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .stats {
+            background: linear-gradient(135deg, rgba(255,165,0,0.1), rgba(139,69,19,0.1));
+            border: 1px solid rgba(255,165,0,0.3);
+        }
+        .feature-icon {
+            font-size: 3rem;
+            color: #ff9500;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <nav class="navbar fixed top-0 w-full py-4 px-6 text-white z-50">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <h1 class="text-3xl handwritten text-orange-400">Anime Hub 🎬</h1>
+            <ul class="flex space-x-6 text-lg handwritten hidden md:flex">
+                <li><a href="#home" class="hover:text-orange-300">Home</a></li>
+                <li><a href="#about" class="hover:text-orange-300">About</a></li>
+                <li><a href="#showcase" class="hover:text-orange-300">Characters</a></li>
+                <li><a href="#series" class="hover:text-orange-300">Series</a></li>
+                <li><a href="#gallery" class="hover:text-orange-300">Gallery</a></li>
+                <li><a href="#testimonials" class="hover:text-orange-300">Reviews</a></li>
+                <li><a href="#features" class="hover:text-orange-300">Features</a></li>
+                <li><a href="#cta" class="hover:text-orange-300">Join</a></li>
+            </ul>
+            <div class="flex items-center space-x-4">
+                <input type="text" id="search-input" placeholder="Search anime..." class="search-input px-4 py-2 rounded-full w-48 md:w-64 text-sm">
+                <button id="search-btn" class="bg-orange-500 text-white px-4 py-2 rounded-full btn-anim">Search</button>
+                <button id="login-btn" class="bg-transparent border border-orange-500 text-orange-500 px-4 py-2 rounded-full btn-anim ml-2">Login</button>
+            </div>
+        </div>
+    </nav>
+
     <!-- Hero Section -->
     <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
-        <iframe class="hero-video absolute inset-0 w-full h-full object-cover opacity-70" src="https://www.youtube.com/embed/zqYlJQ0JxLA?autoplay=1&loop=1&mute=1&controls=0&showinfo=0&rel=0&iv_load_policy=3&playlist=zqYlJQ0JxLA" frameborder="0" allow="autoplay; loop; muted" allowfullscreen></iframe>
+        <iframe class="absolute inset-0 w-full h-full object-cover opacity-70" src="https://www.youtube.com/embed/6vMuq6D2NUg?autoplay=1&loop=1&mute=1&controls=0&showinfo=0&rel=0&iv_load_policy=3&playlist=6vMuq6D2NUg" frameborder="0" allow="autoplay; loop; muted" allowfullscreen></iframe>
         <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-80"></div>
-        <div class="relative text-center z-10 bg-gray-800/30 backdrop-blur-md p-8 rounded-xl shadow-lg">
-            <h1 class="text-5xl md:text-7xl font-bold mb-4 animate-fade-in handwritten text-orange-400">Join the Demon Slayer Corps</h1>
-            <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto handwritten">Embark on an epic journey to vanquish demons and protect humanity!</p>
-            <a href="#showcase" class="inline-block bg-orange-500/80 text-gray-900 px-6 py-3 rounded-full text-lg font-semibold hover:bg-orange-400/90 btn-anim backdrop-blur-sm">Meet the Slayers</a>
+        <div class="relative text-center z-10 bg-gray-800/30 backdrop-blur-md p-8 rounded-xl shadow-lg max-w-4xl mx-auto">
+            <h1 class="text-5xl md:text-7xl font-bold mb-4 animate-fade-in handwritten text-orange-400">Join the Anime Adventure</h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto handwritten">Dive into the vibrant world of anime with epic stories, unforgettable characters, and a thriving community of fans from around the globe!</p>
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <a href="#series" class="inline-block bg-orange-500/80 text-gray-900 px-6 py-3 rounded-full text-lg font-semibold hover:bg-orange-400/90 btn-anim backdrop-blur-sm">Explore Series</a>
+                <a href="#cta" class="inline-block bg-transparent border-2 border-orange-500 text-orange-500 px-6 py-3 rounded-full text-lg font-semibold hover:bg-orange-500/80 btn-anim">Get Started Free</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-12 bg-gray-900/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div class="stats p-4 rounded-lg">
+                    <div class="text-4xl font-bold text-orange-400">10M+</div>
+                    <div class="handwritten">Happy Users</div>
+                </div>
+                <div class="stats p-4 rounded-lg">
+                    <div class="text-4xl font-bold text-orange-400">500+</div>
+                    <div class="handwritten">Anime Series</div>
+                </div>
+                <div class="stats p-4 rounded-lg">
+                    <div class="text-4xl font-bold text-orange-400">1B+</div>
+                    <div class="handwritten">Views</div>
+                </div>
+                <div class="stats p-4 rounded-lg">
+                    <div class="text-4xl font-bold text-orange-400">50K+</div>
+                    <div class="handwritten">Community Posts</div>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- About/Intro Section -->
     <section id="about" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-4xl font-bold handwritten text-orange-400 mb-8 bg-gray-800/30 backdrop-blur-md p-4 rounded-lg">About the Corps 🌙</h2>
-        <p class="text-lg handwritten max-w-3xl mx-auto text-gray-200">
-            Demon Slayer Hub is your gateway to the world of Demon Slayer: Kimetsu no Yaiba! 
-            Join us to explore epic battles, uncover the stories of brave slayers, and connect with 
-            fans who share your passion for this thrilling anime universe. ⚔️
+        <h2 class="text-4xl font-bold handwritten text-orange-400 mb-8 bg-gray-800/30 backdrop-blur-md p-4 rounded-lg inline-block">About Anime Hub 🌟</h2>
+        <p class="text-lg handwritten max-w-3xl mx-auto text-gray-200 mb-8">
+            Anime Hub is your ultimate destination for all things anime! Founded in 2020, we've grown into the largest online platform dedicated to anime enthusiasts worldwide. Explore thrilling series from classics like Naruto and Dragon Ball to the latest hits like Solo Leveling and Jujutsu Kaisen. Connect with passionate fans, discuss episodes, share fan art, and immerse yourself in the diverse worlds of your favorite anime universes. From shonen battles to slice-of-life stories, we've got it all. Join our community of over 10 million users and make Anime Hub your go-to spot for anime discovery! 🎬
         </p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+            <div class="text-center">
+                <div class="feature-icon mb-4">🎌</div>
+                <h3 class="text-2xl handwritten text-orange-400 mb-2">Authentic Content</h3>
+                <p class="text-gray-300">High-quality streams and official episodes from top studios.</p>
+            </div>
+            <div class="text-center">
+                <div class="feature-icon mb-4">👥</div>
+                <h3 class="text-2xl handwritten text-orange-400 mb-2">Vibrant Community</h3>
+                <p class="text-gray-300">Forums, live chats, and fan events to connect with fellow otakus.</p>
+            </div>
+            <div class="text-center">
+                <div class="feature-icon mb-4">🔒</div>
+                <h3 class="text-2xl handwritten text-orange-400 mb-2">Safe & Secure</h3>
+                <p class="text-gray-300">Ad-free experience with premium plans and robust privacy features.</p>
+            </div>
+        </div>
     </section>
 
     <!-- Features/Services Section (Showcase) -->
-    <section id="showcase" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", style="transform:scaleX(-1)">
-        <h2 class="text-4xl font-bold text-center mb-12 text-orange-400 bg-gray-800/30 backdrop-blur-md p-4 rounded-lg handwritten">Meet the Slayers ⚔️</h2>
+    <section id="showcase" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style='transform: scaleX(-1)'>
+        <h2 class="text-4xl font-bold text-center mb-12 text-orange-400 bg-gray-800/30 backdrop-blur-md p-4 rounded-lg handwritten">Meet the Heroes 🗡️</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             <div class="character-card bg-gray-800/30 backdrop-blur-md rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 relative">
                 <div class="checkered-pattern absolute inset-0 opacity-10"></div>
-                <div class="image-container">
-                    <img src="https://motionbgs.com/media/1060/tanjiro-kamado-with-katana-in-circle.jpg" alt="Tanjiro Kamado" class="w-full h-full object-cover">
-                    <iframe src="https://www.youtube.com/embed/tPEicYJWyQQ?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&iv_load_policy=3" frameborder="0" allow="autoplay; muted" allowfullscreen></iframe>
-                </div>
+                <img src="https://images.alphacoders.com/602/602092.jpg" alt="Naruto Uzumaki" class="w-full h-64 object-cover">
                 <div class="p-4 relative">
-                    <h3 class="text-2xl font-semibold mb-2 handwritten text-orange-400">Tanjiro Kamado</h3>
-                    <p class="handwritten text-gray-300">A kind-hearted swordsman wielding the Water Breathing technique to save his sister.</p>
+                    <h3 class="text-2xl font-semibold mb-2 handwritten text-orange-400">Naruto Uzumaki</h3>
+                    <p class="handwritten text-gray-300">A spirited ninja from Naruto, driven by his dream to become Hokage and protect his village. One of the most iconic shonen protagonists with unyielding determination and unbreakable bonds.</p>
                 </div>
                 <div class="reflection">
-                    <img src="https://motionbgs.com/media/1060/tanjiro-kamado-with-katana-in-circle.jpg" alt="Tanjiro Kamado Reflection" class="reflection-img">
+                    <img src="https://images.alphacoders.com/602/602092.jpg" alt="Naruto Uzumaki Reflection" class="reflection-img">
                     <div class="reflection-content">
-                        <h3 class="text-2xl font-semibold mb-2 handwritten text-orange-400">Tanjiro Kamado</h3>
-                        <p class="handwritten text-gray-300">A kind-hearted swordsman wielding the Water Breathing technique to save his sister.</p>
+                        <h3 class="text-2xl font-semibold mb-2 handwritten text-orange-400">Naruto Uzumaki</h3>
+                        <p class="handwritten text-gray-300">A spirited ninja from Naruto, driven by his dream to become Hokage and protect his village. One of the most iconic shonen protagonists with unyielding determination and unbreakable bonds.</p>
                     </div>
                 </div>
             </div>
             <div class="character-card bg-gray-800/30 backdrop-blur-md rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 relative">
                 <div class="checkered-pattern absolute inset-0 opacity-10"></div>
-                <div class="image-container">
-                    <img src="https://i.pinimg.com/originals/85/88/24/858824c69e18c620715735dfb73f7864.jpg" alt="Nezuko Kamado" class="w-full h-full object-cover">
-                    <iframe src="https://www.youtube.com/embed/4apvuw8d3iE?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&iv_load_policy=3" frameborder="0" allow="autoplay; muted" allowfullscreen></iframe>
-                </div>
+                <img src="https://images2.alphacoders.com/564/564835.jpg" alt="Goku" class="w-full h-64 object-cover">
                 <div class="p-4 relative">
-                    <h3 class="text-2xl font-semibold mb-2 handwritten text-orange-400">Nezuko Kamado</h3>
-                    <p class="handwritten text-gray-300">A demon with a gentle soul, fighting alongside her brother to regain her humanity.</p>
+                    <h3 class="text-2xl font-semibold mb-2 handwritten text-orange-400">Son Goku</h3>
+                    <p class="handwritten text-gray-300">The legendary Saiyan warrior from Dragon Ball, always ready for the next battle. Known for his pure heart, immense power, and love for fighting strong opponents across the universe.</p>
                 </div>
                 <div class="reflection">
-                    <img src="https://i.pinimg.com/originals/85/88/24/858824c69e18c620715735dfb73f7864.jpg" alt="Nezuko Kamado Reflection" class="reflection-img">
+                    <img src="https://images2.alphacoders.com/564/564835.jpg" alt="Goku Reflection" class="reflection-img">
                     <div class="reflection-content">
-                        <h3 class="text-2xl font-semibold mb-2 handwritten text-orange-400">Nezuko Kamado</h3>
-                        <p class="handwritten text-gray-300">A demon with a gentle soul, fighting alongside her brother to regain her humanity.</p>
+                        <h3 class="text-2xl font-semibold mb-2 handwritten text-orange-400">Son Goku</h3>
+                        <p class="handwritten text-gray-300">The legendary Saiyan warrior from Dragon Ball, always ready for the next battle. Known for his pure heart, immense power, and love for fighting strong opponents across the universe.</p>
                     </div>
                 </div>
             </div>
             <div class="character-card bg-gray-800/30 backdrop-blur-md rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 relative">
                 <div class="checkered-pattern absolute inset-0 opacity-10"></div>
-                <div class="image-container">
-                    <img src="https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/d4dbfe3a-a6ce-4508-bf02-e6e9807038b8/width=1200/d4dbfe3a-a6ce-4508-bf02-e6e9807038b8.jpeg" alt="Zenitsu Agatsuma" class="w-full h-full object-cover">
-                    <iframe src="https://www.youtube.com/embed/Ji7NxxG63kA?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&iv_load_policy=3" frameborder="0" allow="autoplay; muted" allowfullscreen></iframe>
-                </div>
+                <img src="https://wall.alphacoders.com/big.php?i=1352220" alt="Monkey D. Luffy" class="w-full h-64 object-cover">
                 <div class="p-4 relative">
-                    <h3 class="text-2xl font-semibold mb-2 handwritten text-orange-400">Zenitsu Agatsuma</h3>
-                    <p class="handwritten text-gray-300">A timid warrior with unmatched speed using Thunder Breathing when asleep.</p>
+                    <h3 class="text-2xl font-semibold mb-2 handwritten text-orange-400">Monkey D. Luffy</h3>
+                    <p class="handwritten text-gray-300">The rubber-powered captain from One Piece, on a quest to become the Pirate King. With his infectious optimism and unbreakable will, Luffy inspires his crew to chase dreams across the Grand Line.</p>
                 </div>
                 <div class="reflection">
-                    <img src="https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/d4dbfe3a-a6ce-4508-bf02-e6e9807038b8/width=1200/d4dbfe3a-a6ce-4508-bf02-e6e9807038b8.jpeg" alt="Zenitsu Agatsuma Reflection" class="reflection-img">
+                    <img src="https://wall.alphacoders.com/big.php?i=1352220" alt="Monkey D. Luffy Reflection" class="reflection-img">
                     <div class="reflection-content">
-                        <h3 class="text-2xl font-semibold mb-2 handwritten text-orange-400">Zenitsu Agatsuma</h3>
-                        <p class="handwritten text-gray-300">A timid warrior with unmatched speed using Thunder Breathing when asleep.</p>
+                        <h3 class="text-2xl font-semibold mb-2 handwritten text-orange-400">Monkey D. Luffy</h3>
+                        <p class="handwritten text-gray-300">The rubber-powered captain from One Piece, on a quest to become the Pirate King. With his infectious optimism and unbreakable will, Luffy inspires his crew to chase dreams across the Grand Line.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="character-card bg-gray-800/30 backdrop-blur-md rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 relative">
+                <div class="checkered-pattern absolute inset-0 opacity-10"></div>
+                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=300&fit=crop&crop=entropy" alt="Sung Jin-Woo" class="w-full h-64 object-cover">
+                <div class="p-4 relative">
+                    <h3 class="text-2xl font-semibold mb-2 handwritten text-orange-400">Sung Jin-Woo</h3>
+                    <p class="handwritten text-gray-300">The protagonist of Solo Leveling, rising from the weakest hunter to an overpowered force. His growth and system-based powers make him a standout in 2025's popular series.</p>
+                </div>
+                <div class="reflection">
+                    <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=300&fit=crop&crop=entropy" alt="Sung Jin-Woo Reflection" class="reflection-img">
+                    <div class="reflection-content">
+                        <h3 class="text-2xl font-semibold mb-2 handwritten text-orange-400">Sung Jin-Woo</h3>
+                        <p class="handwritten text-gray-300">The protagonist of Solo Leveling, rising from the weakest hunter to an overpowered force. His growth and system-based powers make him a standout in 2025's popular series.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="character-card bg-gray-800/30 backdrop-blur-md rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 relative">
+                <div class="checkered-pattern absolute inset-0 opacity-10"></div>
+                <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop&crop=entropy" alt="Itachi Uchiha" class="w-full h-64 object-cover">
+                <div class="p-4 relative">
+                    <h3 class="text-2xl font-semibold mb-2 handwritten text-orange-400">Itachi Uchiha</h3>
+                    <p class="handwritten text-gray-300">The enigmatic anti-hero from Naruto, known for his tragic backstory and immense power. One of the most beloved characters for his depth and complexity.</p>
+                </div>
+                <div class="reflection">
+                    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop&crop=entropy" alt="Itachi Uchiha Reflection" class="reflection-img">
+                    <div class="reflection-content">
+                        <h3 class="text-2xl font-semibold mb-2 handwritten text-orange-400">Itachi Uchiha</h3>
+                        <p class="handwritten text-gray-300">The enigmatic anti-hero from Naruto, known for his tragic backstory and immense power. One of the most beloved characters for his depth and complexity.</p>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- Gallery/Media Section -->
-    <section id="gallery" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
-        <h2 class="text-4xl font-bold text-center mb-12 text-orange-400 bg-gray-800/30 backdrop-blur-md p-4 rounded-lg handwritten">Epic Moments Gallery 🎨</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            <img src="https://via.placeholder.com/400x300?text=Water+Breathing" alt="Water Breathing" class="w-full h-64 object-cover rounded-lg floating">
-            <img src="https://via.placeholder.com/400x300?text=Nezuko+Fight" alt="Nezuko Fight" class="w-full h-64 object-cover rounded-lg floating">
-            <img src="https://via.placeholder.com/400x300?text=Thunder+Breathing" alt="Thunder Breathing" class="w-full h-64 object-cover rounded-lg floating">
-            <img src="https://via.placeholder.com/400x300?text=Hashira+Battle" alt="Hashira Battle" class="w-full h-64 object-cover rounded-lg floating">
+        <div class="text-center mt-8">
+            <a href="#series" class="bg-orange-500 text-white px-8 py-3 rounded-full btn-anim text-lg">View All Characters</a>
         </div>
     </section>
 
-    <!-- Testimonials/Reviews Section -->
-    <section id="testimonials" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-4xl font-bold text-center mb-12 text-orange-400 bg-gray-800/30 backdrop-blur-md p-4 rounded-lg handwritten">What Slayers Say 💬</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="bg-gray-800/30 backdrop-blur-md p-6 rounded-lg shadow-lg">
-                <p class="handwritten text-lg italic text-gray-200">"This hub brings the Demon Slayer world to life! The community is amazing! 😍"</p>
-                <p class="handwritten text-right mt-4 text-orange-400">— TanjiroFan</p>
+    <!-- Popular Series Section -->
+    <section id="series" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-4xl font-bold text-center mb-12 text-orange-400 bg-gray-800/30 backdrop-blur-md p-4 rounded-lg handwritten">Popular Series 📺</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="series-card bg-gray-800/30 backdrop-blur-md rounded-lg overflow-hidden shadow-lg text-center p-6">
+                <img src="https://source.unsplash.com/random/300x400?naruto" alt="Naruto" class="w-full h-48 object-cover rounded-md mb-4">
+                <h3 class="text-2xl handwritten text-orange-400 mb-2">Naruto</h3>
+                <p class="handwritten text-gray-300 mb-4">Follow Naruto's journey from a mischievous orphan to the greatest ninja. With over 700 episodes, this shonen classic explores themes of perseverance, friendship, and redemption. Available in sub and dub.</p>
+                <div class="flex space-x-2">
+                    <button class="bg-orange-500 text-white px-4 py-2 rounded-full btn-anim flex-1">Watch Now</button>
+                    <button class="bg-transparent border border-orange-500 text-orange-500 px-4 py-2 rounded-full btn-anim flex-1">Details</button>
+                </div>
             </div>
-            <div class="bg-gray-800/30 backdrop-blur-md p-6 rounded-lg shadow-lg">
-                <p class="handwritten text-lg italic text-gray-200">"I love the epic galleries and connecting with other fans! Totally worth joining! ⚔️"</p>
-                <p class="handwritten text-right mt-4 text-orange-400">— NezukoLover</p>
+            <div class="series-card bg-gray-800/30 backdrop-blur-md rounded-lg overflow-hidden shadow-lg text-center p-6">
+                <img src="https://source.unsplash.com/random/300x400?dragonball" alt="Dragon Ball" class="w-full h-48 object-cover rounded-md mb-4">
+                <h3 class="text-2xl handwritten text-orange-400 mb-2">Dragon Ball</h3>
+                <p class="handwritten text-gray-300 mb-4">Goku's endless quest for stronger opponents spans generations. From Dragon Ball to Super, enjoy epic battles, power-ups, and tournaments in this legendary franchise with thousands of episodes.</p>
+                <div class="flex space-x-2">
+                    <button class="bg-orange-500 text-white px-4 py-2 rounded-full btn-anim flex-1">Watch Now</button>
+                    <button class="bg-transparent border border-orange-500 text-orange-500 px-4 py-2 rounded-full btn-anim flex-1">Details</button>
+                </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Call to Action -->
-    <section id="cta" class="py-16 text-center bg-gray-800/30 backdrop-blur-md">
-        <h2 class="text-4xl font-bold handwritten text-orange-400 mb-8">Ready to Fight Demons? 🔥</h2>
-        <p class="text-lg handwritten mb-6 max-w-2xl mx-auto text-gray-200">
-            Join the Demon Slayer Corps and start your epic adventure today!
-        </p>
-        <button id="cta-btn" class="bg-orange-500/80 text-gray-900 text-xl handwritten py-3 px-6 rounded-full btn-anim backdrop-blur-sm">
-            Sign Up Now! ✨
-        </button>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800/30 backdrop-blur-md py-6 text-center">
-        <p class="handwritten text-lg mb-2">&copy; 2025 Demon Slayer Hub. All rights reserved.</p>
-        <div class="flex justify-center space-x-4 mb-2">
-            <a href="https://www.youtube.com/channel/UCFUYvF0r4UZYShrQ5_K2x1A" class="text-orange-400 hover:text-orange-300 handwritten">YouTube</a>
-            <a href="https://www.instagram.com/_marin_kitagawa_01?igsh=ZWIxdDlkMnFiZWtm" class="text-orange-400 hover:text-orange-300 handwritten">Instagram</a>
-            <a href="https://t.me/+vwGHfvkuQes4ZmRl" class="text-orange-400 hover:text-orange-300 handwritten">Telegram</a>
-        </div>
-        <p class="handwritten text-sm">Hashtags: #anime #animeedit #animehindiedit #animegirls #animebadassmomentscompilation #demonslayer #mitsuri #nezuko #shinobu</p>
-    </footer>
-
-    <!-- JavaScript for Interactivity -->
-    <script>
-        // CTA button interaction
-        const ctaButton = document.getElementById('cta-btn');
-        ctaButton.addEventListener('click', () => {
-            alert('Ready to join the Demon Slayer Corps? Let’s slay some demons! ⚔️');
-            // Add signup logic or redirect here
-        });
-
-        // Video play on hover
-        document.querySelectorAll('.character-card').forEach(card => {
-            const iframe = card.querySelector('iframe');
-            card.addEventListener('mouseenter', () => {
-                iframe.src = iframe.src; // Reload iframe to start video
-            });
-            card.addEventListener('mouseleave', () => {
-                iframe.src = iframe.src.replace('autoplay=1', 'autoplay=0'); // Stop video by disabling autoplay
-            });
-        });
-    </script>
-</body>
-</html>
+            <div class="series-card bg-gray-800/30 backdrop-blur-md rounded-lg overflow-hidden shadow-lg text-center p-6">
+                <img src="https://source.unsplash.com/random/300x400?onepiece" alt="One Piece" class="w-full h-48 object-cover rounded-md mb-4">
+                <h3 class="text-2xl handwritten text-orange-400 mb-2">One Piece</h3>
+                <p class="handwritten text-gray-300 mb-4">Luffy's adventure to find the One Piece treasure with his Straw Hat crew. The longest-running anime with over 1000 episodes, full of world-building, humor, and heartfelt moments.</p>
+                <div class="flex space-x-2">
+                    <button class="bg-orange-500 text-white px-4 py-2 rounded-full btn-anim flex-1">Watch Now</button>
+                    <button class="bg-transparent border border-orange-500 text
