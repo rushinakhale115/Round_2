@@ -60,27 +60,45 @@
             position: relative;
             overflow: visible; /* Allow reflection to be visible */
         }
-        .character-card::after {
-            content: '';
+        .character-card .reflection {
             position: absolute;
-            bottom: -10px; /* Position below the card */
-            left: 50%;
-            transform: translateX(-50%) scaleX(-1); /* Flip horizontally for mirror effect, centered */
+            top: 100%; /* Position below the card */
+            left: 0;
+            width: 100%;
+            height: 50%; /* Reflect half the card height for a realistic effect */
+            background: inherit; /* Inherit the card's background */
+            transform: scaleY(-1); /* Flip vertically to create mirror effect */
+            opacity: 0.3; /* Semi-transparent reflection */
+            filter: blur(2px); /* Slight blur for realism */
+            z-index: -1;
+            background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), transparent); /* Fade out at bottom */
+        }
+        .character-card img.reflection-img {
+            position: absolute;
+            top: 0; /* Align with the top of the reflection container */
+            left: 0;
             width: 100%;
             height: 100%;
-            background-image: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.1));
-            z-index: -1;
-            pointer-events: none;
-            border-radius: 50%; /* Make it look like a round mirror */
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5); /* Add depth to the mirror */
+            object-fit: cover;
+            transform: scaleY(-1); /* Flip vertically to match reflection */
+            opacity: 0.3; /* Match reflection opacity */
+            filter: blur(2px); /* Match reflection blur */
         }
-        .character-card:hover::after {
-            animation: shimmer 2s infinite;
+        .character-card .reflection-content {
+            position: absolute;
+            top: 64px; /* Offset to align with the image height in reflection */
+            left: 0;
+            width: 100%;
+            padding: 1rem; /* Match card padding */
+            transform: scaleY(-1); /* Flip vertically to match reflection */
+            opacity: 0.3; /* Match reflection opacity */
+            filter: blur(2px); /* Match reflection blur */
         }
-        @keyframes shimmer {
-            0% { box-shadow: inset 0 0 20px rgba(255, 165, 0, 0.5); }
-            50% { box-shadow: inset 0 0 40px rgba(255, 165, 0, 0.8); }
-            100% { box-shadow: inset 0 0 20px rgba(255, 165, 0, 0.5); }
+        .character-card:hover .reflection,
+        .character-card:hover .reflection-img,
+        .character-card:hover .reflection-content {
+            opacity: 0.5; /* Slightly increase opacity on hover */
+            filter: blur(1px); /* Reduce blur on hover for sharper reflection */
         }
     </style>
 </head>
@@ -132,6 +150,13 @@
                     <h3 class="text-2xl font-semibold mb-2 handwritten text-orange-400">Tanjiro Kamado</h3>
                     <p class="handwritten text-gray-300">A kind-hearted swordsman wielding the Water Breathing technique to save his sister.</p>
                 </div>
+                <div class="reflection">
+                    <img src="https://motionbgs.com/media/1060/tanjiro-kamado-with-katana-in-circle.jpg" alt="Tanjiro Kamado Reflection" class="reflection-img">
+                    <div class="reflection-content">
+                        <h3 class="text-2xl font-semibold mb-2 handwritten text-orange-400">Tanjiro Kamado</h3>
+                        <p class="handwritten text-gray-300">A kind-hearted swordsman wielding the Water Breathing technique to save his sister.</p>
+                    </div>
+                </div>
             </div>
             <div class="character-card bg-gray-800/30 backdrop-blur-md rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 relative">
                 <div class="checkered-pattern absolute inset-0 opacity-10"></div>
@@ -140,6 +165,13 @@
                     <h3 class="text-2xl font-semibold mb-2 handwritten text-orange-400">Nezuko Kamado</h3>
                     <p class="handwritten text-gray-300">A demon with a gentle soul, fighting alongside her brother to regain her humanity.</p>
                 </div>
+                <div class="reflection">
+                    <img src="https://i.pinimg.com/originals/85/88/24/858824c69e18c620715735dfb73f7864.jpg" alt="Nezuko Kamado Reflection" class="reflection-img">
+                    <div class="reflection-content">
+                        <h3 class="text-2xl font-semibold mb-2 handwritten text-orange-400">Nezuko Kamado</h3>
+                        <p class="handwritten text-gray-300">A demon with a gentle soul, fighting alongside her brother to regain her humanity.</p>
+                    </div>
+                </div>
             </div>
             <div class="character-card bg-gray-800/30 backdrop-blur-md rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 relative">
                 <div class="checkered-pattern absolute inset-0 opacity-10"></div>
@@ -147,6 +179,13 @@
                 <div class="p-4 relative">
                     <h3 class="text-2xl font-semibold mb-2 handwritten text-orange-400">Zenitsu Agatsuma</h3>
                     <p class="handwritten text-gray-300">A timid warrior with unmatched speed using Thunder Breathing when asleep.</p>
+                </div>
+                <div class="reflection">
+                    <img src="https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/d4dbfe3a-a6ce-4508-bf02-e6e9807038b8/width=1200/d4dbfe3a-a6ce-4508-bf02-e6e9807038b8.jpeg" alt="Zenitsu Agatsuma Reflection" class="reflection-img">
+                    <div class="reflection-content">
+                        <h3 class="text-2xl font-semibold mb-2 handwritten text-orange-400">Zenitsu Agatsuma</h3>
+                        <p class="handwritten text-gray-300">A timid warrior with unmatched speed using Thunder Breathing when asleep.</p>
+                    </div>
                 </div>
             </div>
         </div>
