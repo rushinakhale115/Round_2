@@ -47,19 +47,44 @@
             background-size: 20px 20px;
             background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
         }
-        .navbar {
-            transition: background-color 0.3s ease;
-        }
-        .navbar.scrolled {
-            background-color: rgba(0, 0, 0, 0.8);
-        }
-        iframe {
-            transform: scale(1.5); /* Adjusts zoom to better fill the screen */
+        iframe.hero-video {
+            transform: scale(1.5); /* Adjusts zoom for hero background video */
         }
         .character-card {
             position: relative;
             overflow: visible; /* Allow reflection to be visible */
             margin-bottom: 100px; /* Space for reflection */
+        }
+        .character-card .image-container {
+            position: relative;
+            width: 100%;
+            height: 16rem; /* Matches h-64 */
+            overflow: hidden;
+        }
+        .character-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensure image fits perfectly in frame */
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            transition: opacity 0.3s ease;
+        }
+        .character-card iframe {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 5;
+            display: none; /* Hidden by default */
+        }
+        .character-card:hover img {
+            opacity: 0; /* Hide image on hover */
+        }
+        .character-card:hover iframe {
+            display: block; /* Show video on hover */
         }
         .character-card .reflection {
             position: absolute;
@@ -104,24 +129,9 @@
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
-    <!-- Navbar -->
-    <nav class="navbar fixed top-0 w-full py-4 px-6 text-white z-50">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <h1 class="text-3xl handwritten text-orange-400">Demon Slayer Hub ⚔️</h1>
-            <ul class="flex space-x-6 text-lg handwritten">
-                <li><a href="#home" class="hover:text-orange-300">Home</a></li>
-                <li><a href="#about" class="hover:text-orange-300">About</a></li>
-                <li><a href="#showcase" class="hover:text-orange-300">Slayers</a></li>
-                <li><a href="#gallery" class="hover:text-orange-300">Gallery</a></li>
-                <li><a href="#testimonials" class="hover:text-orange-300">Reviews</a></li>
-                <li><a href="#cta" class="hover:text-orange-300">Join</a></li>
-            </ul>
-        </div>
-    </nav>
-
     <!-- Hero Section -->
     <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
-        <iframe class="absolute inset-0 w-full h-full object-cover opacity-70" src="https://www.youtube.com/embed/zqYlJQ0JxLA?autoplay=1&loop=1&mute=1&controls=0&showinfo=0&rel=0&iv_load_policy=3&playlist=zqYlJQ0JxLA" frameborder="0" allow="autoplay; loop; muted" allowfullscreen></iframe>
+        <iframe class="hero-video absolute inset-0 w-full h-full object-cover opacity-70" src="https://www.youtube.com/embed/zqYlJQ0JxLA?autoplay=1&loop=1&mute=1&controls=0&showinfo=0&rel=0&iv_load_policy=3&playlist=zqYlJQ0JxLA" frameborder="0" allow="autoplay; loop; muted" allowfullscreen></iframe>
         <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-80"></div>
         <div class="relative text-center z-10 bg-gray-800/30 backdrop-blur-md p-8 rounded-xl shadow-lg">
             <h1 class="text-5xl md:text-7xl font-bold mb-4 animate-fade-in handwritten text-orange-400">Join the Demon Slayer Corps</h1>
@@ -141,12 +151,15 @@
     </section>
 
     <!-- Features/Services Section (Showcase) -->
-    <section id="showcase" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style='transform: scaleX(-1)'>
+    <section id="showcase" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", style="transform:scaleX(-1)">
         <h2 class="text-4xl font-bold text-center mb-12 text-orange-400 bg-gray-800/30 backdrop-blur-md p-4 rounded-lg handwritten">Meet the Slayers ⚔️</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             <div class="character-card bg-gray-800/30 backdrop-blur-md rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 relative">
                 <div class="checkered-pattern absolute inset-0 opacity-10"></div>
-                <img src="https://motionbgs.com/media/1060/tanjiro-kamado-with-katana-in-circle.jpg" alt="Tanjiro Kamado" class="w-full h-64 object-cover">
+                <div class="image-container">
+                    <img src="https://motionbgs.com/media/1060/tanjiro-kamado-with-katana-in-circle.jpg" alt="Tanjiro Kamado" class="w-full h-full object-cover">
+                    <iframe src="https://www.youtube.com/embed/tPEicYJWyQQ?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&iv_load_policy=3" frameborder="0" allow="autoplay; muted" allowfullscreen></iframe>
+                </div>
                 <div class="p-4 relative">
                     <h3 class="text-2xl font-semibold mb-2 handwritten text-orange-400">Tanjiro Kamado</h3>
                     <p class="handwritten text-gray-300">A kind-hearted swordsman wielding the Water Breathing technique to save his sister.</p>
@@ -161,7 +174,10 @@
             </div>
             <div class="character-card bg-gray-800/30 backdrop-blur-md rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 relative">
                 <div class="checkered-pattern absolute inset-0 opacity-10"></div>
-                <img src="https://i.pinimg.com/originals/85/88/24/858824c69e18c620715735dfb73f7864.jpg" alt="Nezuko Kamado" class="w-full h-64 object-cover">
+                <div class="image-container">
+                    <img src="https://i.pinimg.com/originals/85/88/24/858824c69e18c620715735dfb73f7864.jpg" alt="Nezuko Kamado" class="w-full h-full object-cover">
+                    <iframe src="https://www.youtube.com/embed/4apvuw8d3iE?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&iv_load_policy=3" frameborder="0" allow="autoplay; muted" allowfullscreen></iframe>
+                </div>
                 <div class="p-4 relative">
                     <h3 class="text-2xl font-semibold mb-2 handwritten text-orange-400">Nezuko Kamado</h3>
                     <p class="handwritten text-gray-300">A demon with a gentle soul, fighting alongside her brother to regain her humanity.</p>
@@ -176,7 +192,10 @@
             </div>
             <div class="character-card bg-gray-800/30 backdrop-blur-md rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 relative">
                 <div class="checkered-pattern absolute inset-0 opacity-10"></div>
-                <img src="https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/d4dbfe3a-a6ce-4508-bf02-e6e9807038b8/width=1200/d4dbfe3a-a6ce-4508-bf02-e6e9807038b8.jpeg" alt="Zenitsu Agatsuma" class="w-full h-64 object-cover">
+                <div class="image-container">
+                    <img src="https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/d4dbfe3a-a6ce-4508-bf02-e6e9807038b8/width=1200/d4dbfe3a-a6ce-4508-bf02-e6e9807038b8.jpeg" alt="Zenitsu Agatsuma" class="w-full h-full object-cover">
+                    <iframe src="https://www.youtube.com/embed/Ji7NxxG63kA?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&iv_load_policy=3" frameborder="0" allow="autoplay; muted" allowfullscreen></iframe>
+                </div>
                 <div class="p-4 relative">
                     <h3 class="text-2xl font-semibold mb-2 handwritten text-orange-400">Zenitsu Agatsuma</h3>
                     <p class="handwritten text-gray-300">A timid warrior with unmatched speed using Thunder Breathing when asleep.</p>
@@ -193,7 +212,7 @@
     </section>
 
     <!-- Gallery/Media Section -->
-    <section id="gallery" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="gallery" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
         <h2 class="text-4xl font-bold text-center mb-12 text-orange-400 bg-gray-800/30 backdrop-blur-md p-4 rounded-lg handwritten">Epic Moments Gallery 🎨</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             <img src="https://via.placeholder.com/400x300?text=Water+Breathing" alt="Water Breathing" class="w-full h-64 object-cover rounded-lg floating">
@@ -242,21 +261,22 @@
 
     <!-- JavaScript for Interactivity -->
     <script>
-        // Navbar scroll effect
-        window.addEventListener('scroll', () => {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-
         // CTA button interaction
         const ctaButton = document.getElementById('cta-btn');
         ctaButton.addEventListener('click', () => {
             alert('Ready to join the Demon Slayer Corps? Let’s slay some demons! ⚔️');
             // Add signup logic or redirect here
+        });
+
+        // Video play on hover
+        document.querySelectorAll('.character-card').forEach(card => {
+            const iframe = card.querySelector('iframe');
+            card.addEventListener('mouseenter', () => {
+                iframe.src = iframe.src; // Reload iframe to start video
+            });
+            card.addEventListener('mouseleave', () => {
+                iframe.src = iframe.src.replace('autoplay=1', 'autoplay=0'); // Stop video by disabling autoplay
+            });
         });
     </script>
 </body>
