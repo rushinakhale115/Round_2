@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demon Slayer Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white font-caveat">
+    <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
+        <iframe class="absolute inset-0 w-full h-full object-cover opacity-70" src="https://www.youtube.com/embed/zqYlJQ0JxLA?autoplay=1&loop=1&mute=1&controls=0&showinfo=0&rel=0&iv_load_policy=3&playlist=zqYlJQ0JxLA" frameborder="0" allow="autoplay; loop; muted" allowfullscreen></iframe>
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-80"></div>
+        <div class="relative text-center z-10 bg-gray-800/30 backdrop-blur-md p-8 rounded-xl shadow-lg">
+            <h1 class="text-5xl md:text-7xl font-bold mb-4 animate-fade-in">Join the Demon Slayer Corps</h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">Embark on an epic journey to vanquish demons and protect humanity!</p>
+            <a href="#showcase" class="inline-block bg-orange-500/80 text-gray-900 px-6 py-3 rounded-full text-lg font-semibold hover:bg-orange-400/90 transition-colors duration-300 backdrop-blur-sm">Meet the Slayers</a>
+        </div>
+    </section>
+
+    <section id="showcase" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-4xl font-bold text-center mb-12 text-orange-400 bg-gray-800/30 backdrop-blur-md p-4 rounded-lg">Demon Slayer Characters</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="character-card bg-gray-800/30 backdrop-blur-md rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 relative">
+                <div class="checkered-pattern absolute inset-0 opacity-10"></div>
+                <img src="https://via.placeholder.com/300x400?text=Tanjiro+Kamado" alt="Tanjiro Kamado" class="w-full h-64 object-cover">
+                <div class="p-4 relative">
+                    <h3 class="text-2xl font-semibold mb-2">Tanjiro Kamado</h3>
+                    <p class="text-gray-300">A kind-hearted swordsman wielding the Water Breathing technique to save his sister.</p>
+                </div>
+            </div>
+            <div class="character-card bg-gray-800/30 backdrop-blur-md rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 relative">
+                <div class="checkered-pattern absolute inset-0 opacity-10"></div>
+                <img src="https://via.placeholder.com/300x400?text=Nezuko+Kamado" alt="Nezuko Kamado" class="w-full h-64 object-cover">
+                <div class="p-4 relative">
+                    <h3 class="text-2xl font-semibold mb-2">Nezuko Kamado</h3>
+                    <p class="text-gray-300">A demon with a gentle soul, fighting alongside her brother to regain her humanity.</p>
+                </div>
+            </div>
+            <div class="character-card bg-gray-800/30 backdrop-blur-md rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 relative">
+                <div class="checkered-pattern absolute inset-0 opacity-10"></div>
+                <img src="https://via.placeholder.com/300x400?text=Zenitsu+Agatsuma" alt="Zenitsu Agatsuma" class="w-full h-64 object-cover">
+                <div class="p-4 relative">
+                    <h3 class="text-2xl font-semibold mb-2">Zenitsu Agatsuma</h3>
+                    <p class="text-gray-300">A timid warrior with unmatched speed using Thunder Breathing when asleep.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800/30 backdrop-blur-md py-6 text-center">
+        <p class="mb-2">&copy; 2025 Demon Slayer Hub. All rights reserved.</p>
+        <p class="mb-2">Follow us on <a href="https://www.youtube.com/channel/UCFUYvF0r4UZYShrQ5_K2x1A" class="text-orange-400 hover:text-orange-300">YouTube</a> | <a href="https://www.instagram.com/_marin_kitagawa_01?igsh=ZWIxdDlkMnFiZWtm" class="text-orange-400 hover:text-orange-300">Instagram</a> | <a href="https://t.me/+vwGHfvkuQes4ZmRl" class="text-orange-400 hover:text-orange-300">Telegram</a></p>
+        <p>Hashtags: #anime #animeedit #animehindiedit #animegirls #animebadassmomentscompilation #demonslayer #mitsuri #nezuko #shinobu</p>
+    </footer>
+
+    <style>
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fade-in 1s ease-out;
+        }
+        .checkered-pattern {
+            background-image: linear-gradient(45deg, #000 25%, transparent 25%), 
+                              linear-gradient(-45deg, #000 25%, transparent 25%), 
+                              linear-gradient(45deg, transparent 75%, #000 75%), 
+                              linear-gradient(-45deg, transparent 75%, #000 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+        }
+        iframe {
+            transform: scale(1.5); /* Adjusts zoom to better fill the screen */
+        }
+    </style>
+</body>
+</html>
